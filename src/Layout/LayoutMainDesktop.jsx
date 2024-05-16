@@ -104,7 +104,7 @@ export default function LayoutMainDesktop() {
     ),
     ,
     getItem(
-      "User Setting",
+      "User Profile",
       "/usersetting",
       <NavLink to="/usersetting">
         {" "}

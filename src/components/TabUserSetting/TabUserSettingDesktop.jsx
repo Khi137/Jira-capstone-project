@@ -141,7 +141,7 @@ export default function TabUserSettingDesktop() {
           // layout="vertical"
           >
 
-            <div className="mb-2 font-medium text-center ">EDIT USER</div>
+            <div className="mb-2 font-medium text-center ">User Information</div>
             <Form.Item
 
               label=""

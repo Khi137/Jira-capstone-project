@@ -82,7 +82,7 @@ export default function LayoutMainTablet() {
     ),
     ,
     getItem(
-      "User Setting",
+      "User Profile",
       "/usersetting",
       <NavLink to="/usersetting">
         {" "}

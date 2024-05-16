@@ -103,7 +103,7 @@ export default function LayoutMainMobile() {
     ),
     ,
     getItem(
-      "User Setting",
+      "User Profile",
       "/usersetting",
       <NavLink to="/usersetting">
         {" "}
