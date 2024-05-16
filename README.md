@@ -1,10 +1,11 @@
-Author: Dang Cong Khoi & Tran Nhat Minh & Dang Xuan Phu
-(CyberSoft)
+by Tran Tuan Anh (CyberSoft) - BCS10 2024
 
 
 Account to test: 
-    -username: khoidang@gmail.com
-    -password: 123123
+    -username: trantuananh1102015@gmail.com
+    -password: 16102001
+
+
 API:https://jiranew.cybersoft.edu.vn/swagger/index.html
 
-link demo : https://www.youtube.com/watch?v=sgRQGypLgO0
+link demo : 
