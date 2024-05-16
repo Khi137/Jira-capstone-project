@@ -8,4 +8,4 @@ Account to test:
 
 API:https://jiranew.cybersoft.edu.vn/swagger/index.html
 
-link demo : 
+link demo : https://jira-capstone-project.vercel.app/
