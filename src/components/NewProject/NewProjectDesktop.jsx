@@ -21,8 +21,8 @@ const NewProjectDesktop = () => {
   const [form] = Form.useForm();
   let dispatch = useDispatch();
   const [category, setCategory] = useState();
-  const [randomNumber, setRandomNumber] = useState("11");
-  console.log(" NewProject.jsx:10  NewProject category:", category);
+  const [randomNumber, setRandomNumber] = useState("2424");
+  console.log("category:", category);
 
   useEffect(() => {
     projectService
@@ -31,26 +31,21 @@ const NewProjectDesktop = () => {
         setCategory(res.data.content);
       })
       .catch((err) => {
-        console.log("🚀 ~ file: NewProject.jsx:15 ~ render ~ err:", err);
+        console.log("err:", err);
       });
   }, [randomNumber]);
   const onFinish = (values) => {
     projectService
       .createProjectAuthorize(values)
       .then((res) => {
-        console.log(" NewProject.jsx:45 ~ .then ~ res:", res);
+        console.log("res:", res);
         message.success("Đăng ký thành công");
         navigate("/");
-        // setTimeout(() => {
-        //   // window.location.href = "/";
-        
-        // }, 1000);
-
         form.resetFields();
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-        console.log("🚀 ~ file: NewProject.jsx:49 ~ onFinish ~ err:", err);
+        console.log("err:", err);
         message.error("Đăng ký thất bại");
       });
   };
@@ -76,9 +71,6 @@ const NewProjectDesktop = () => {
       
         <ConfigProvider
           theme={{
-            //     token:{
-            // margin:10
-            //     },
             components: {
               Form: {
                 itemMarginBottom: 10,
@@ -91,9 +83,6 @@ const NewProjectDesktop = () => {
           className=" flex flex-col align-center justify-center"
             form={form}
             name="basic"
-            // labelCol={{
-            //   span: 8,
-            // }}
             style={{
               maxWidth: 400,
               maxHeight: 300,
@@ -105,14 +94,10 @@ const NewProjectDesktop = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-            // layout="vertical"
           >
             <Form.Item label="Project Name" name="projectname" rules={[]}>
               <Input
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // height: "50px",
                 }}
               />
             </Form.Item>
@@ -120,9 +105,6 @@ const NewProjectDesktop = () => {
             <Form.Item label="Project Category" name="category" rules={[]}>
               <Select
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // height: "50px",
                 }}
                 defaultValue="Lựa chọn loại dự án"
               >
@@ -141,9 +123,6 @@ const NewProjectDesktop = () => {
               <Input.TextArea
                 rows={2}
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // height: "350px",
                 }}
               />
             </Form.Item>
@@ -157,7 +136,6 @@ const NewProjectDesktop = () => {
                 className="px-3 mx-2 btnCancel"
                 type="text"
                 onClick={() => {
-                  // window.location.href = "/";
                   navigate("/")
                 }}
               >

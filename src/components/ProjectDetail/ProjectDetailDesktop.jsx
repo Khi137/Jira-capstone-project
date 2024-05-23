@@ -23,6 +23,7 @@ import {
   Space,
   Collapse,
   Popconfirm,
+
 } from "antd";
 import { commentService, projectService } from "../../service/service";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
@@ -36,14 +37,11 @@ import {
   PlusOutlined,
   RocketOutlined,
   SearchOutlined,
-  SendOutlined,
+  EditOutlined ,
   UserOutlined,
 } from "@ant-design/icons";
 
 const { TextArea } = Input;
-// const onChange = (e) => {
-//   console.log("Change:", e.target.value);
-// };
 const { Option } = Select;
 
 const data = [
@@ -74,8 +72,6 @@ export default function ProjectDetailDesktop() {
     timeTrackingSpent: 0,
     timeTrackingRemaining: 0,
   });
-  // console.log("time tracking",timeTrackingTemp)
-  //assignee for ant select multi
   const [assigneeTemp, setAssigneeTemp] = useState(
     taskData?.assigness?.map((member) => {
       return {
@@ -92,8 +88,6 @@ export default function ProjectDetailDesktop() {
   const [taskPriorityTemp, setTaskPriorityTemp] = useState();
   const [commentEdit, setCommentEdit] = useState("");
   const [commentId, setCommentId] = useState(0);
-  console.log("coment id", commentId);
-  console.log("commentEdit:", commentEdit);
 
   const onScroll = (e) => {
     if (
@@ -107,15 +101,11 @@ export default function ProjectDetailDesktop() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
-    //form.resetFields();
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  // const handleChangeTaskEdit = (value) => {
-  //   console.log(`selected ${value}`);
-  // };
   //modal task update
   const [isModalTaskOpen, setIsModalTaskOpen] = useState(false);
 
@@ -132,19 +122,8 @@ export default function ProjectDetailDesktop() {
         const assigneeList = result.data.content.assigness.map((item) => {
           return item.id;
         });
-        // console.log("assignee list",assigneeList)
         setAssigneePutTemp(assigneeList);
         setTaskId(result.data.content.taskId);
-
-        // setDescriptionTemp(result.data.content.description);
-        // setStatusIdTemp(result.data.content.statusId);
-        // setEstimateTemp(result.data.content.originalEstimate);
-        // const newTimeTracking = {
-        //   timeTrackingSpent: result.data.content.timeTrackingSpent,
-        //   timeTrackingRemaining: result.data.content.timeTrackingRemaining,
-        // };
-        // setTimeTrackingTemp(newTimeTracking);
-        // setTaskPriorityTemp(result.data.content.priorityId);
 
         //assignee form for ant render
         const map1 = result.data.content.assigness.map((member) => {
@@ -162,11 +141,6 @@ export default function ProjectDetailDesktop() {
       .catch((err) => {
         console.log("err task detail", err);
       });
-
-    // setTimeout(() => {
-    //   console.log("Delayed for 0.5 second.");
-    //   setIsModalTaskOpen(true);
-    // }, "200");
   };
   useEffect(() => form.resetFields(), [assigneeTemp]);
   const handleCancelTask = () => {
@@ -183,22 +157,20 @@ export default function ProjectDetailDesktop() {
     projectDataRedux = [];
   }
   let usersRedux = useSelector((state) => state.usersManageReducer.usersRedux);
-  // console.log("users redux", usersRedux);
   const projectDataReduxById = projectDataRedux.filter(
     (item) => item.creator.id == USER.id
   );
 
-  //console.log("projectDataReduxById", projectDataReduxById);
   const [taskPriority, setTaskPriority] = useState();
-  //console.log("task priority state", taskPriority);
+
   const [taskStatus, setTaskStatus] = useState();
   const [taskType, setTaskType] = useState();
-  //console.log("task type", taskType);
+
   const [open, setOpen] = useState(false);
   const [productSelected, setProductSelected] = useState();
-  //console.log("pick product", productSelected);
+ 
   const handleChange = (value) => {
-    // console.log(`selected ${value}`);
+
     const productSelected = projectDataReduxById.find(
       (item) => item.id == value
     );
@@ -223,7 +195,6 @@ export default function ProjectDetailDesktop() {
     projectService
       .getTaskPriority()
       .then((result) => {
-        //console.log("project service",result.data.content)
         setTaskPriority(result.data.content);
       })
       .catch((err) => {});
@@ -280,7 +251,6 @@ export default function ProjectDetailDesktop() {
 
       const destItems = [...destColumn.lstTaskDeTail];
       //destColumn.lstTaskDeTail item của collum đang chọn
-      //console.log("destColumn.lstTaskDeTail",destColumn.lstTaskDeTail)
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
       setColumns({
@@ -295,13 +265,11 @@ export default function ProjectDetailDesktop() {
         },
       });
 
-      // console.log("remove",removed)
-      // console.log("status id ", destination.droppableId);
       let data = {
         taskId: removed.taskId,
         statusId: destination.droppableId * 1 + 1,
       };
-      // console.log("data", data);
+
       projectService
         .updateStatus(data)
         .then((result) => {
@@ -311,9 +279,6 @@ export default function ProjectDetailDesktop() {
         .catch((err) => {
           message.error("Error");
         });
-
-      //console.log("sourceItems",sourceItems)
-      //console.log("drop end ",destItems)
     } else {
       const column = columns[source.droppableId];
       const copiedItems = [...column.lstTaskDeTail];
@@ -326,7 +291,6 @@ export default function ProjectDetailDesktop() {
           lstTaskDeTail: copiedItems,
         },
       });
-      // console.log("drop end same column");
       setRandomNumber(Math.random());
     }
   };
@@ -344,49 +308,30 @@ export default function ProjectDetailDesktop() {
     SetSearchInput("");
   };
   const onDeleteUserOfProject = (UserId) => {
-    // console.log("delete id", UserId);
-    // console.log("project id", projectDetail.id);
     const item = { projectId: projectDetail.id, userId: UserId };
-    // console.log("item", item);
     projectService
       .removeUserFromProject(item)
       .then((result) => {
         message.success("User deleted");
-        //console.log("dk thanh cong", result);
       })
       .catch((err) => {
         message.error("Error");
-        // console.log("dk thanh cong", err);
       });
     setRandomNumber(Math.random());
   };
 
-  //console.log("random number", randomNumber);
   //lấy tên project
   let { id } = useParams();
-  //const [columns, setColumns] = useState(taskStatus);
-  // if(projectDetail!==false){
-  //   const columns = projectDetail.lstTask
-  // }
-
-  // console.log("columns",columns)
-
   const [columns, setColumns] = useState(false);
-  // console.log("🚀 ~ file: ProjectDetail.jsx:87 ~ columns:", columns);
 
   const [randomNumber, setRandomNumber] = useState("11");
   const [projectDetail, setProjectDetail] = useState(false);
-  console.log(
-    "🚀 ~ file: ProjectDetail.jsx:84 ~ projectDetail:",
-    projectDetail
-  );
   // lấy data project detail
   useEffect(() => {
-    // console.log("lay projectdetail lan dau");
     projectService
       .getProjectDetail(id)
       .then((result) => {
-        // console.log("project detail", result.data.content);
+       
         setProjectDetail(result.data.content);
         setColumns(result.data.content.lstTask);
       })
@@ -398,10 +343,8 @@ export default function ProjectDetailDesktop() {
     projectService
       .getProjectDetail(id)
       .then((result) => {
-        // console.log("project detail", result.data.content);
         setProjectDetail(result.data.content);
         setColumns(result.data.content.lstTask);
-        // console.log("lay data luc update status");
       })
       .catch((err) => {});
   }, [randomNumber]);
@@ -412,10 +355,8 @@ export default function ProjectDetailDesktop() {
       (item1) =>
         !projectDetail.members.some((item2) => item2.userId === item1.userId)
     );
-    // console.log("users Filter", usersFilter);
   }
   const [searchInput, SetSearchInput] = useState("");
-  // console.log("🚀 ~ file: ProjectDetail.jsx:299 ~ searchInput:", searchInput);
 
   const FilteredData = () => {
     return usersFilter.filter((user) =>
@@ -426,20 +367,18 @@ export default function ProjectDetailDesktop() {
   //edit task
 
   const onChangeStatus = (value) => {
-    // console.log("status",value)
     setStatusIdTemp(String(value));
     const data = {
       taskId: taskData.taskId,
       statusId: String(value),
     };
-    // console.log("data status",data)
     projectService
       .updateStatus(data)
       .then((result) => {
         message.success("Success");
       })
       .catch((err) => {
-        message.error("Error");
+        message.error("Something went wrong!");
       });
   };
 
@@ -490,7 +429,6 @@ export default function ProjectDetailDesktop() {
 
   //change and submit
   const onChangePriority = (value) => {
-    // console.log("status",value)
     const data = {
       taskId: taskData.taskId,
       priorityId: value,
@@ -563,26 +501,10 @@ export default function ProjectDetailDesktop() {
   };
   const onChangeAssignees = (value) => {
     console.log("assignee", value);
-    // const newData = projectDetail.members.filter((item) =>
-    //   value.includes(item.userId)
-    // );
+
     setAssigneePutTemp(value);
   };
   const onUpdateTask = () => {
-    // const data = {
-    //   listUserAsign: assigneePutTemp,
-    //   taskId: taskId,
-    //   taskName: nameTemp,
-
-    //   description: descriptionTemp,
-    //   statusId: statusIdTemp,
-    //   originalEstimate: estimateTemp,
-    //   timeTrackingSpent: timeTrackingTemp.timeTrackingSpent,
-    //   timeTrackingRemaining: timeTrackingTemp.timeTrackingRemaining,
-    //   projectId: projectDetail.id,
-    //   typeId: taskTypeIdTemp,
-    //   priorityId: taskPriorityTemp,
-    // };
     const dataAddAssignee = { ...taskData, listUserAsign: assigneePutTemp };
     const dataAddTaskId = { ...dataAddAssignee, taskId: taskId };
     const data = { ...dataAddTaskId, taskName: nameTemp };
@@ -602,7 +524,7 @@ export default function ProjectDetailDesktop() {
     projectService
       .removeTask(taskData.taskId)
       .then((result) => {
-        message.success("xoá thành công");
+        message.success("Deleted successfully");
         setIsModalTaskOpen(false);
         setRandomNumber(Math.random());
       })
@@ -614,19 +536,18 @@ export default function ProjectDetailDesktop() {
     commentService
       .deleteComment(id)
       .then((result) => {
-        message.success("xoá thành công");
+        message.success("Deleted successfully");
         setRandomNumber(Math.random());
       })
       .catch((err) => {});
   };
 
   const onEditComment = (data) => {
-    console.log("comment data", data);
     setCommentEdit(data.commentContent);
     setCommentId(data.id);
   };
   const handleEditComment = (e) => {
-    console.log("edit comment", e.target.value);
+
     setCommentEdit(e.target.value);
   };
 
@@ -638,7 +559,7 @@ export default function ProjectDetailDesktop() {
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-        message.error("Error");
+        message.error("Something went wrong");
       });
   };
   const contentComment = (
@@ -650,7 +571,7 @@ export default function ProjectDetailDesktop() {
         type="text"
         onClick={onUpdateComment}
       >
-        <SendOutlined />
+        <EditOutlined  />
       </Button>
     </div>
   );
@@ -787,7 +708,6 @@ export default function ProjectDetailDesktop() {
                             >
                               {column.statusName}
                             </h2>
-                            {/* {column.items.map((item, index) => { */}
                             {column.lstTaskDeTail?.map((item, index) => {
                               return (
                                 <Draggable
@@ -924,9 +844,6 @@ export default function ProjectDetailDesktop() {
       >
         <ConfigProvider
           theme={{
-            //     token:{
-            // margin:10
-            //     },
             components: {
               Form: {
                 itemMarginBottom: 20,
@@ -956,18 +873,11 @@ export default function ProjectDetailDesktop() {
             <Form.Item
               label="Project"
               name="projectId"
-
-              // help="* You can only create tasks of your own projects!"
             >
               <Select
                 onChange={handleChange}
-                // defaultValue={{
-                //   value: projectDetail.projectName,
-                // }}
                 disabled
               >
-                {/* {projectDataReduxById?.map((project, index) => { */}
-
                 <Option value={projectDetail.id} s key={projectDetail.id}>
                   {projectDetail.projectName}
                 </Option>
@@ -988,9 +898,6 @@ export default function ProjectDetailDesktop() {
             </Form.Item>
             <Form.Item label="Status" name="statusId">
               <Select
-              // defaultValue={{
-              //   value: taskStatus ? taskStatus[0].statusName : "",
-              // }}
               >
                 {taskStatus?.map((item, index) => {
                   return (
@@ -1011,9 +918,6 @@ export default function ProjectDetailDesktop() {
               }}
             >
               <Select
-              // defaultValue={{
-              //   value: taskPriority ? taskPriority[0].priority : "",
-              // }}
               >
                 {taskPriority?.map((item, index) => {
                   return (
@@ -1043,7 +947,6 @@ export default function ProjectDetailDesktop() {
                   return (
                     <Option
                       value={item.id}
-                      //value={parseInt(item.TypeId)}
                       key={index}
                     >
                       {item.taskType}
@@ -1101,8 +1004,6 @@ export default function ProjectDetailDesktop() {
                   required: true,
                   message: "Please input Hours spent!",
                   type: "number",
-                  // min: 0,
-                  // max:3,
                 },
               ]}
               style={{
@@ -1169,9 +1070,6 @@ export default function ProjectDetailDesktop() {
         footer={[]}
         width={600}
       >
-        {/* <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p> */}
         <Divider />
         <Row>
           <Col span={20} className="pb-3 pl-3">
@@ -1265,11 +1163,6 @@ export default function ProjectDetailDesktop() {
       </Modal>
       <Modal
         destroyOnClose={true}
-        // afterClose={() => form.resetFields()}
-        // title="Task update"
-        // title={
-
-        // }
         open={isModalTaskOpen}
         onCancel={handleCancelTask}
         footer={[]}
@@ -1332,8 +1225,6 @@ export default function ProjectDetailDesktop() {
                Add Comment
               </Button>
             </div>
-
-            {/* <Divider orientation="left"> Comment Lists</Divider> */}
             <div
               className="comment-lists"
               style={{
@@ -1422,7 +1313,6 @@ export default function ProjectDetailDesktop() {
                 <Button
                 type="text"
                 className="btnRemove"
-                  // onClick={onRemoveTask}
                   style={{ marginLeft: "170px", marginBottom: "10px" }}
                 >
                   Remove Task
@@ -1455,7 +1345,6 @@ export default function ProjectDetailDesktop() {
                     <div>
                       <Divider orientation="left" style={{fontSize:"14px"}}>Task Name</Divider>
                       <Input
-                        // addonBefore="Name"
                         onChange={onChangeTaskName}
                         defaultValue={taskData.taskName}
                       />
@@ -1556,7 +1445,7 @@ export default function ProjectDetailDesktop() {
                         <div>
                           <InputNumber
                             addonBefore={<HistoryOutlined />}
-                            prefix="min"
+                            prefix="hours"
                             defaultValue={taskData.originalEstimate}
                             style={{ width: "120px" }}
                             onChange={onChangeEstimate}
@@ -1574,7 +1463,6 @@ export default function ProjectDetailDesktop() {
                       </Row>
                       <br />
 
-                      {/* <p>Time tracking</p> */}
                       <Divider orientation="left" style={{fontSize:"14px"}}> Time Tracking</Divider>
 
                       <Row className="justify-between">
@@ -1587,7 +1475,7 @@ export default function ProjectDetailDesktop() {
                             width: "115px",
                           }}
                           addonBefore={<HistoryOutlined />}
-                          prefix="min"
+                          prefix="hours"
                           defaultValue={taskData.timeTrackingSpent}
                           onChange={onChangeSpent}
                         />
@@ -1597,7 +1485,7 @@ export default function ProjectDetailDesktop() {
                             width: "115px",
                           }}
                           addonBefore={<HistoryOutlined />}
-                          prefix="min"
+                          prefix="hours"
                           defaultValue={taskData.timeTrackingRemaining}
                           onChange={onChangeRemaining}
                         />

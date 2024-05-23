@@ -42,7 +42,7 @@ console.log("newData",newData)
       
     }
   }
-// const newData = data;
+
 
 
 
@@ -70,7 +70,6 @@ console.log("newData",newData)
               .getUser(data.id)
               .then((result) => {
                 const nowUser = result.data.content.find(item=>item.userId==data.id)
-                // console.log("now user",nowUser)
               dispatch(setInfoAction(nowUser));
               })
               .catch((err) => {
@@ -88,7 +87,6 @@ console.log("newData",newData)
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  // useEffect(() => form.resetFields(), [newData]);
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -108,9 +106,6 @@ console.log("newData",newData)
       <div className="flex flex-col justify-center items-center">
         <ConfigProvider
           theme={{
-            //     token:{
-            // margin:10
-            //     },
             components: {
               Form: {
                 itemMarginBottom: 10,
@@ -125,8 +120,7 @@ console.log("newData",newData)
             name="register"
             style={
               {
-                // maxWidth: 1000,
-                // maxHeight: 1000,
+
                 width:200
               }
             }
@@ -134,7 +128,7 @@ console.log("newData",newData)
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-            // layout="vertical"
+
           >
          
             <div className="mb-2 font-medium text-center ">User Information</div>
@@ -152,10 +146,6 @@ console.log("newData",newData)
               <Input
                addonBefore="ID:"
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
                 disabled={true}
                 value={newData?.userId}
@@ -174,10 +164,6 @@ console.log("newData",newData)
             >
               <Input
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
                 value={newData?.name}
               />
@@ -190,10 +176,6 @@ console.log("newData",newData)
             >
               <Input.Password
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
               />
             </Form.Item>
@@ -211,10 +193,6 @@ console.log("newData",newData)
             >
               <Input
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
                 value={newData?.email}
               />
@@ -232,12 +210,7 @@ console.log("newData",newData)
             >
               <Input
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
-                // addonBefore={prefixSelector}
                 value={newData?.phoneNumber}
               />
             </Form.Item>
@@ -249,11 +222,6 @@ console.log("newData",newData)
                  size="small"
                   type="text"
                   htmlType="submit"
-                  // style={{
-                  //   backgroundColor: "#1890ff",
-                  //   minWidth: "60px",
-                  //   borderRadius: "30px",
-                  // }}
                   className="btnBlue"
                 >
                   Edit
@@ -265,12 +233,6 @@ console.log("newData",newData)
                   onClick={() => {
                     navigate("/" );
                   }}
-                  // style={{
-                  //   backgroundColor: "#808080",
-                  //   color: "white",
-                  //   borderRadius: "30px",
-                  //   minWidth: "60px",
-                  // }}
                 >
                   Cancel
                 </Button>

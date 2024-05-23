@@ -21,7 +21,7 @@ const NewProjectMobile = () => {
   const [form] = Form.useForm();
   let dispatch = useDispatch();
   const [category, setCategory] = useState();
-  const [randomNumber, setRandomNumber] = useState("11");
+  const [randomNumber, setRandomNumber] = useState("2424");
   console.log(" NewProject.jsx:10  NewProject category:", category);
 
   useEffect(() => {
@@ -31,25 +31,21 @@ const NewProjectMobile = () => {
         setCategory(res.data.content);
       })
       .catch((err) => {
-        console.log("🚀 ~ file: NewProject.jsx:15 ~ render ~ err:", err);
+        console.log("err:", err);
       });
   }, [randomNumber]);
   const onFinish = (values) => {
     projectService
       .createProjectAuthorize(values)
       .then((res) => {
-        console.log(" NewProject.jsx:45 ~ .then ~ res:", res);
+        console.log(" res:", res);
         message.success("Đăng ký thành công");
-        // setTimeout(() => {
-        //   // window.location.href = "/";
-        
-        // }, 1000);
         navigate("/");
         form.resetFields();
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-        console.log("🚀 ~ file: NewProject.jsx:49 ~ onFinish ~ err:", err);
+        console.log("err:", err);
         message.error("Đăng ký thất bại");
       });
   };
@@ -75,9 +71,6 @@ const NewProjectMobile = () => {
       
         <ConfigProvider
           theme={{
-            //     token:{
-            // margin:10
-            //     },
             components: {
               Form: {
                 itemMarginBottom: 10,
@@ -90,9 +83,6 @@ const NewProjectMobile = () => {
           className=" flex flex-col align-center justify-center"
             form={form}
             name="basic"
-            // labelCol={{
-            //   span: 8,
-            // }}
             style={{
               maxWidth: 400,
               maxHeight: 300,
@@ -104,14 +94,12 @@ const NewProjectMobile = () => {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-            // layout="vertical"
+
           >
             <Form.Item label="Project Name" name="projectname" rules={[]}>
               <Input
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // height: "50px",
+
                 }}
               />
             </Form.Item>
@@ -119,9 +107,7 @@ const NewProjectMobile = () => {
             <Form.Item label="Project Category" name="category" rules={[]}>
               <Select
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // height: "50px",
+
                 }}
                 defaultValue="Lựa chọn loại dự án"
               >
@@ -140,9 +126,7 @@ const NewProjectMobile = () => {
               <Input.TextArea
                 rows={2}
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // height: "350px",
+
                 }}
               />
             </Form.Item>
@@ -156,7 +140,7 @@ const NewProjectMobile = () => {
                 size="small"
                 type="text"
                 onClick={() => {
-                  // window.location.href = "/";
+
                   navigate("/");
                 }}
               >

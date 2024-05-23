@@ -33,7 +33,6 @@ export default function TabUsersMobile() {
   useEffect(() => {
     console.log("chay ueff setuserdata")
     setUserData(usersRedux);
-    // setGridData(usersRedux);
   }, []);
 
   useEffect(() => {
@@ -41,34 +40,28 @@ export default function TabUsersMobile() {
     usersManageService
       .getUsersList()
       .then((result) => {
-        // console.log("users list layout", result.data.content);
-        // dispatch(setUsersData(result.data.content));
         setUserData(result.data.content);
-        // setGridData(userData);
       })
       .catch((err) => {
         console.log("err", err);
       });
   }, [randomNumber]);
-  // console.log("usersDataRedux", usersRedux);
 
   // Drawer Edit
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const [user, setUser] = useState("");
 
-  // console.log("user", user);
-
   const showDrawer = () => {
     form.resetFields();
     setOpen(true);
   };
   const onClose = () => {
-    // form.resetFields();
+
     setOpen(false);
   };
   const onFinish = (values) => {
-    // console.log("values", values);
+
     let dataEdit = {
       id: values.userId,
       passWord: values.passWord,
@@ -80,9 +73,6 @@ export default function TabUsersMobile() {
       .editUser(dataEdit)
       .then((res) => {
         message.success("Successfully updated!");
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 1000);
         setRandomNumber(Math.random());
       })
       .catch((err) => {
@@ -99,13 +89,13 @@ export default function TabUsersMobile() {
   const [deleteUser, setDeleteUser] = useState();
 
   const [searchText, setSearchText] = useState("");
-  // console.log("searchText", searchText);
+
   let [filteredValue] = useState();
 
   useEffect(() => {
     console.log("chay ueff khi co userData, set grid data")
     if (userData) {
-      // setGridData(userData)
+
       filteredValue = userData.filter((value) => {
         return value.name.toLowerCase().includes(searchText.toLowerCase());
       });
@@ -146,9 +136,6 @@ export default function TabUsersMobile() {
     const newData = gridData.find((item) => item.userId == id);
     console.log("newData", newData);
     setUser(newData);
-    // setTimeout(() => {
-    //   showDrawer();
-    // }, 300);
     showDrawer();
   };
   
@@ -179,7 +166,6 @@ export default function TabUsersMobile() {
               className="btnRed"
               icon={<DeleteOutlined />}
               onClick={() => {
-                // console.log(record);
                 setDeleteUser(record);
                 setIsModalOpen(true);
               }}
@@ -192,12 +178,6 @@ export default function TabUsersMobile() {
   return (
     <div
       className=""
-      //  style={{
-      //   margin: '24px 16px',
-      //   padding: 24,
-      //   minHeight: 280,
-
-      // }}
     >
       <ConfigProvider
         theme={{
@@ -223,7 +203,6 @@ export default function TabUsersMobile() {
       <Table
       size="small"
         columns={columns}
-        // dataSource={gridData.length ? gridData : userData}
         dataSource={gridData}
         onChange={onChange}
         scroll={{
@@ -254,7 +233,6 @@ export default function TabUsersMobile() {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete="off"
-          // layout="vertical"
         >
           <Form.Item name="userId" label="">
             <Input

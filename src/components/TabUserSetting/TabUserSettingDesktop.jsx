@@ -43,7 +43,7 @@ export default function TabUserSettingDesktop() {
 
     }
   }
-  // const newData = data;
+
 
 
 
@@ -71,11 +71,11 @@ export default function TabUserSettingDesktop() {
           .getUser(data.id)
           .then((result) => {
 
-            //  console.log("user api", result.data.content);
+
             const nowUser = result.data.content.find(item => item.userId == data.id)
-            // console.log("now user",nowUser)
+
             dispatch(setInfoAction(nowUser));
-            // localStorage.setItem("USER", JSON.stringify(result.data.content[0]));
+
           })
           .catch((err) => {
             console.log("err", err);
@@ -92,7 +92,7 @@ export default function TabUserSettingDesktop() {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  // useEffect(() => form.resetFields(), [newData]);
+
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
       <Select
@@ -112,9 +112,7 @@ export default function TabUserSettingDesktop() {
       <div className="flex flex-col justify-center items-center">
         <ConfigProvider
           theme={{
-            //     token:{
-            // margin:10
-            //     },
+
             components: {
               Form: {
                 itemMarginBottom: 10,
@@ -129,8 +127,7 @@ export default function TabUserSettingDesktop() {
             name="register"
             style={
               {
-                // maxWidth: 1000,
-                // maxHeight: 1000,
+
                 width: 300
               }
             }
@@ -138,7 +135,7 @@ export default function TabUserSettingDesktop() {
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-          // layout="vertical"
+
           >
 
             <div className="mb-2 font-medium text-center ">User Information</div>
@@ -156,10 +153,6 @@ export default function TabUserSettingDesktop() {
               <Input
                 addonBefore="ID:"
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
                 disabled={true}
                 value={newData?.userId}
@@ -178,10 +171,6 @@ export default function TabUserSettingDesktop() {
             >
               <Input
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
                 value={newData?.name}
               />
@@ -194,10 +183,6 @@ export default function TabUserSettingDesktop() {
             >
               <Input.Password
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
               />
             </Form.Item>
@@ -215,10 +200,6 @@ export default function TabUserSettingDesktop() {
             >
               <Input
                 style={{
-                  // borderColor: "black",e
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
                 value={newData?.email}
               />
@@ -236,12 +217,7 @@ export default function TabUserSettingDesktop() {
             >
               <Input
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
-                  // width: "400px",
-                  // height: "50px",
                 }}
-                // addonBefore={prefixSelector}
                 value={newData?.phoneNumber}
               />
             </Form.Item>
@@ -265,7 +241,6 @@ export default function TabUserSettingDesktop() {
                   className="px-3 mx-2 btnCancel"
                   type="text"
                   onClick={() => {
-                    // window.location.href = "/";
                     navigate("/");
                   }}
                   style={{

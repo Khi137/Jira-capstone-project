@@ -14,7 +14,6 @@ export const loginAction = (formData, callback) => {
         localStorage.setItem("USER", JSON.stringify(res.data.content));
         //call back dùng window.location.href dùng navigate vì dùng navigate là hook ngoài component ko được
         callback();
-        //window.location.href("/");
       })
       .catch((err) => {
         console.log(err.response.data.message);

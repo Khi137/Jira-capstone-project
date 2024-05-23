@@ -28,7 +28,7 @@ const { Header, Sider, Content } = Layout;
 export default function LayoutMainMobile() {
   let userJson = localStorage.getItem("USER");
   let USER = JSON.parse(userJson);
-  // console.log("USER",USER)
+
 
   const dispatch = useDispatch();
   let curUser  = useSelector((state) => state.userReducer.user);
@@ -51,14 +51,13 @@ export default function LayoutMainMobile() {
   let handleLogout = () => {
     // xoá toàn bộ local storage
     localStorage.clear();
-    // vừa chuyển trang vừa reload
-    // window.location.href="/"
+
   };
   useEffect(() => {
     projectService
       .getProjectList()
       .then((result) => {
-        // console.log("project list layout", result.data.content);
+
         dispatch(setProjectData(result.data.content));
       })
       .catch((err) => {
@@ -69,7 +68,7 @@ export default function LayoutMainMobile() {
     usersManageService
       .getUsersList()
       .then((result) => {
-        // console.log("users list layout", result.data.content);
+
         dispatch(setUsersData(result.data.content));
       })
       .catch((err) => {
@@ -142,16 +141,12 @@ export default function LayoutMainMobile() {
             </div>
            
               <Menu
-              // style={{position:"fixed"}}
+
               selectedKeys={location.pathname}
               defaultSelectedKeys={location.pathname}
                 theme="dark"
                 mode="inline"
                 items={items}
-                // onClick={({key})=>{
-                //   navigate(key)
-
-                // }}
               />
           
           </Sider>
@@ -169,17 +164,6 @@ export default function LayoutMainMobile() {
                 fontSize: '30px',
               }}
             >
-              {/* <Button
-                className="btnTrigger btnCollapse"
-                type="dashed"
-                icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-                onClick={() => setCollapsed(!collapsed)}
-                style={{
-                  fontSize: "16px",
-                  // width: 64,
-                  height: 46,
-                }}
-              /> */}
               <span className="flex " style={{ fontWeight: "600",fontSize:"12px" }}>
               {curUser ?  <p>Wellcome {curUser?.name}</p>  : <p>Wellcome {USER?.name}</p> }
               <Avatar
@@ -198,21 +182,13 @@ export default function LayoutMainMobile() {
                 minHeight: '300px',
                 overflow: 'initial',
                 backgroundColor: "#fff",
-                // padding: "30px 15px",
+
                 borderRadius: "10px",
                 
             }}
             >
-              {/* <div
-                style={{
-                  // overflow: 'scroll',
-                  backgroundColor: "#fff",
-                  padding: "30px 15px",
-                  borderRadius: "10px",
-                }}
-              > */}
                 <Outlet />
-              {/* </div> */}
+
             </Content>
           </Layout>
         </Layout>

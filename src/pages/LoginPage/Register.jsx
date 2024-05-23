@@ -35,8 +35,6 @@ function Register() {
           passWord: values?.passWord,
         };
         let onSuccess = () => {
-          // message.success("Success");
-          // window.location.href = "/";
           navigate("/login");
         };
         dispatch(loginAction(inforUser, onSuccess));
@@ -69,9 +67,6 @@ function Register() {
         <div className="flex flex-col justify-center items-center ">
           <ConfigProvider
             theme={{
-              //     token:{
-              // margin:10
-              //     },
               components: {
                 Form: {
                   itemMarginBottom: 10,
@@ -86,9 +81,6 @@ function Register() {
               name="register"
               style={
                 {
-                  // maxWidth: 800,
-                  // maxHeight: 800,
-                  // width:300
                 }
               }
               initialValues={{
@@ -117,10 +109,6 @@ function Register() {
                 <Input
                   style={
                     {
-                      // borderColor: "black",
-                      // borderStyle: "dashed",
-                      // width: "300px",
-                      // height: "50px",
                     }
                   }
                 />
@@ -134,7 +122,7 @@ function Register() {
                 <Input
                   style={
                     {
-                      // width: "300px",
+                 
                     }
                   }
                   type="password"
@@ -166,7 +154,7 @@ function Register() {
                 <Input
                   style={
                     {
-                      // width: "200px",
+           
                     }
                   }
                   type="password"
@@ -187,7 +175,7 @@ function Register() {
                 <Input
                   style={
                     {
-                      // width: "200px",
+                     
                     }
                   }
                 />
@@ -207,7 +195,7 @@ function Register() {
                   addonBefore={prefixSelector}
                   style={
                     {
-                      // width: "100%",
+                      
                     }
                   }
                 />
@@ -230,7 +218,7 @@ function Register() {
                     className="px-3 mx-2 lg:px-7"
                     type="text"
                     onClick={() => {
-                      // window.location.href = "/login";
+
                       navigate("/login");
                     }}
                     style={{ backgroundColor: "#808080", color: "white" }}

@@ -5,7 +5,7 @@ import NewProjectDesktop from "./NewProjectDesktop";
 import NewProjectMobile from "./NewProjectMobile";
 
 const Desktop = ({ children }) => {
-  const isDesktop = useMediaQuery({ minWidth: 768 })
+  const isDesktop = useMediaQuery({ minWidth: 992 })
   return isDesktop ? children : null
 }
 

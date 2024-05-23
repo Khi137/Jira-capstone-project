@@ -63,8 +63,6 @@ export default function TabProjectsTablet() {
     projectService
       .getProjectList()
       .then((result) => {
-        // console.log("chay updatae");
-      
          dispatch(setProjectData(result.data.content));
 
         setProjectDataCom(result.data.content);
@@ -74,39 +72,22 @@ export default function TabProjectsTablet() {
         console.log("err", err);
       });
   }, [randomNumber]);
-  // useEffect(()=>{
-  //   dispatch(setProjectData(projectData));
-  // },[randomNumber])
-
-  //reset field khi project đổi
   useEffect(() => form.resetFields(), [project]);
   const showDrawer = () => {
-    // form.resetFields();
     setOpen(true);
   };
   const onClose = () => {
-    // window.location.href = "/";
-
     setOpen(false);
   };
   const onFinish = (values) => {
     console.log("🚀 ~ file: TabProjects.jsx:60 ~ onFinish ~ values:", values);
-    // let dataUpdate = {
-    //   id: values.id,
-    //   projectName: values.projectName,
-    //   creator: data.id,
-    //   description: values.description,
-    //   // categoryId: values.category,
-    //   categoryId: project?.projectCategory?.id.toString(),
-    // };
+
     projectService
       .updateProject(project.id, values)
       .then((res) => {
         message.success("Edit thành công");
 
-        // setTimeout(() => {
-        //   window.location.href = "/";
-        // }, 1000);
+       
         setOpen(false);
         setRandomNumber(Math.random());
       })
@@ -114,33 +95,28 @@ export default function TabProjectsTablet() {
         console.log("🚀 ~ file: TabProjects.jsx:77 ~ onFinish ~ err:", err);
         message.error("Edit thất bại");
       });
-    // console.log(
-    //   "🚀 ~ file: TabProjects.jsx:70 ~ onFinish ~ dataUpdate:",
-    //   dataUpdate
-    // );
+   
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
 
   const [projectDataReduxById, setProjectDataReduxById] = useState([]);
-  //const [toggleData, setToggleData] = useState([]);
+
   //lấy data redux
   useEffect(() => {
-    // console.log("chạy ueff của redux");
+
     if (projectDataRedux) {
       const projectDataReduxById = projectDataRedux.filter(
         (item) => item.creator.id == USER.id
       );
       setProjectDataCom(projectDataRedux);
       setProjectDataReduxById(projectDataReduxById);
-      //setToggleData(projectDataReduxById);
     }
   }, [projectDataRedux]);
 
   // call api data
   useEffect(() => {
-    // console.log("chạy ueff lay api projectdata truc tiep");
     if (projectData) {
       const projectDataReduxById = projectData.filter(
         (item) => item.creator.id == USER.id
@@ -148,7 +124,6 @@ export default function TabProjectsTablet() {
       setProjectDataCom(projectData);
     
       setProjectDataReduxById(projectDataReduxById);
-      //setToggleData(projectDataReduxById);
     }
   }, [projectData]);
 
@@ -157,9 +132,7 @@ export default function TabProjectsTablet() {
 
     if (checked == true) {
       setToggle(true);
-      // setToggleData(projectDataReduxById);
     } else if (checked == false) {
-      // setToggleData(projectDataRedux);
       setToggle(false);
     }
   };
@@ -167,16 +140,12 @@ export default function TabProjectsTablet() {
   // Modal Delete
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteProject, setDeleteProject] = useState();
-  // console.log("deleteProject",deleteProject)
   const handleOk = () => {
     projectService
       .deleteProject(deleteProject.id)
       .then((res) => {
         message.success("Xóa dự án thành công");
         setRandomNumber(Math.random());
-        // setTimeout(() => {
-        //   window.location.href = "/";
-        // }, 1000);
       })
       .catch((err) => {
         message.error("Xóa dự án thất bại");
@@ -329,13 +298,12 @@ export default function TabProjectsTablet() {
               <Button
                 type="primary"
                 className="btnBlue"
-                // type="text"
+              
                 icon={<EditOutlined />}
                 onClick={() => {
                   projectService
                     .getProjectDetail(record.id)
                     .then((res) => {
-                      // form.resetFields();
                       setProject(res.data.content);
                     })
                     .then(() => {
@@ -405,24 +373,23 @@ export default function TabProjectsTablet() {
               projectName: project?.projectName,
               categoryId: project?.projectCategory?.id,
               description: project?.description,
-              // remember: true,
+   
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-            // layout="vertical"
+   
           >
             <Form.Item
               name="id"
               label="ID"
-              // style={{ marginTop: "20px" }}
+          
               rules={[]}
             >
               <Input
                 style={{
                   borderColor: "black",
-                  // borderStyle: "dashed",
-                  // height: "50px",
+
                 }}
                 values={project?.id}
                 disabled={true}
@@ -438,9 +405,7 @@ export default function TabProjectsTablet() {
               <Input
                 style={
                   {
-                    // borderColor: "black",
-                    // borderStyle: "dashed",
-                    // height: "50px",
+      
                   }
                 }
                 values={project?.projectName}
@@ -456,9 +421,7 @@ export default function TabProjectsTablet() {
               <Select
                 style={
                   {
-                    // borderColor: "black",
-                    // borderStyle: "dashed",
-                    // height: "50px",
+              
                   }
                 }
                 values={{
@@ -480,8 +443,7 @@ export default function TabProjectsTablet() {
               <Input.TextArea
                 rows={4}
                 style={{
-                  // borderColor: "black",
-                  // borderStyle: "dashed",
+     
                   height: "50px",
                 }}
                 values={project?.description}

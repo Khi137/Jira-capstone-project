@@ -73,9 +73,7 @@ export let projectService = {
   updateTask: (value) => {
     return https.post(`/api/Project/updateTask`, value);
   },
-  // deleteProject :(value)=>{
-  //   return https.delete(`/api/Project/deleteProject`,value)
-  // },
+
   removeTask: (taskId) => {
     return https.delete(`/api/Project/removeTask?taskId=${taskId}`);
   },
