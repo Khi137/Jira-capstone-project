@@ -12,16 +12,10 @@ export default function TabUserSettingDesktop() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let data = JSON.parse(localStorage.getItem("USER"));
-  console.log(
-    "🚀 ~ file: TabUserSetting.jsx:11 ~ TabUserSetting ~ data:",
-    data
-  );
   let reduxUser = useSelector((state) => state.userReducer.user);
-  console.log("🚀 ~ file:reduxUser:", reduxUser)
 
   const [newData, setNewData] = useState(data);
 
-  console.log("newData", newData)
   let initValue = {}
   if (reduxUser) {
     initValue = {
@@ -57,7 +51,6 @@ export default function TabUserSettingDesktop() {
       name: values.name,
       phoneNumber: values.phoneNumber,
     };
-    console.log(updateUser);
     usersManageService
       .editUser(updateUser)
       .then((res) => {
@@ -85,7 +78,6 @@ export default function TabUserSettingDesktop() {
       })
       .catch((err) => {
         message.error("Failed to update!");
-        console.log("🚀 ~ file: TabUserSetting.jsx:36 ~ onFinish ~ err:", err);
       });
 
   };

@@ -11,16 +11,10 @@ export default function TabUserSettingMobile() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   let data = JSON.parse(localStorage.getItem("USER"));
-  console.log(
-    "🚀 ~ file: TabUserSetting.jsx:11 ~ TabUserSetting ~ data:",
-    data
-  );
   let reduxUser  = useSelector((state) => state.userReducer.user);
-  console.log("🚀 ~ file:reduxUser:", reduxUser)
 
   const [newData, setNewData] = useState(data);
 
-console.log("newData",newData)
   let initValue = {}
   if(reduxUser){
     initValue = {
@@ -56,7 +50,6 @@ console.log("newData",newData)
       name: values.name,
       phoneNumber: values.phoneNumber,
     };
-    console.log(updateUser);
     usersManageService
       .editUser(updateUser)
       .then((res) => {
@@ -73,14 +66,12 @@ console.log("newData",newData)
               dispatch(setInfoAction(nowUser));
               })
               .catch((err) => {
-                console.log("err", err);
               });
         
        
       })
       .catch((err) => {
         message.error("Failed to update!");
-        console.log("🚀 ~ file: TabUserSetting.jsx:36 ~ onFinish ~ err:", err);
       });
       
   };

@@ -22,7 +22,6 @@ const NewProjectMobile = () => {
   let dispatch = useDispatch();
   const [category, setCategory] = useState();
   const [randomNumber, setRandomNumber] = useState("2424");
-  console.log(" NewProject.jsx:10  NewProject category:", category);
 
   useEffect(() => {
     projectService

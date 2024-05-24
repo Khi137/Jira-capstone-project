@@ -43,16 +43,13 @@ export default function TabProjectsMobile() {
   let USER = JSON.parse(userJson);
   let data = JSON.parse(localStorage.getItem("USER"));
   const [projectData, setProjectDataCom] = useState();
-  console.log("🚀 ~ file:  projectData:", projectData)
   
   let { projectDataRedux } = useSelector((state) => state.projectReducer);
-  console.log("projectDataRedux", projectDataRedux);
 
   useEffect(() => {
     projectService
       .projectCategory()
       .then((res) => {
-        console.log("🚀 ~ file: TabProjects.jsx:41 ~ .then ~ res:", res);
         setCategory(res.data.content);
       })
       .catch((err) => {});
@@ -83,7 +80,6 @@ export default function TabProjectsMobile() {
     setOpen(false);
   };
   const onFinish = (values) => {
-    console.log("🚀 ~ file: TabProjects.jsx:60 ~ onFinish ~ values:", values);
     let dataUpdate = {
       id: values.id,
       projectName: values.projectName,
@@ -94,18 +90,13 @@ export default function TabProjectsMobile() {
     projectService
       .updateProject(project.id, values)
       .then((res) => {
-        message.success("Edit thành công");
+        message.success("Edit successfully");
         setOpen(false);
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-        console.log("🚀 ~ file: TabProjects.jsx:77 ~ onFinish ~ err:", err);
-        message.error("Edit thất bại");
+        message.error("Edit failed");
       });
-    console.log(
-      "🚀 ~ file: TabProjects.jsx:70 ~ onFinish ~ dataUpdate:",
-      dataUpdate
-    );
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -137,7 +128,6 @@ export default function TabProjectsMobile() {
   }, [projectData]);
 
   const onChangeSwitch = (checked) => {
-    console.log(`switch to ${checked}`);
 
     if (checked == true) {
       setToggle(true);
@@ -153,11 +143,11 @@ export default function TabProjectsMobile() {
     projectService
       .deleteProject(deleteProject.id)
       .then((res) => {
-        message.success("Xóa dự án thành công");
+        message.success("Delete successfully");
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-        message.error("Xóa dự án thất bại");
+        message.error("Delete failed");
       })
       .finally(setIsModalOpen(false));
   };
@@ -207,7 +197,6 @@ export default function TabProjectsMobile() {
                       showDrawer();
                     })
                     .catch((err) => {
-                      console.log("jsx:257 ~ TabProjects ~ err:", err);
                     });
                 }}
               ></Button>

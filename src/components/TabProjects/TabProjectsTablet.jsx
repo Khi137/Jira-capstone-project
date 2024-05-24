@@ -36,23 +36,18 @@ export default function TabProjectsTablet() {
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const [project, setProject] = useState(null);
-  console.log("project",project)
   const [category, setCategory] = useState();
 
   let userJson = localStorage.getItem("USER");
   let USER = JSON.parse(userJson);
   let data = JSON.parse(localStorage.getItem("USER"));
   const [projectData, setProjectDataCom] = useState();
-  console.log("🚀 ~ file:  projectData:", projectData)
   
   let { projectDataRedux } = useSelector((state) => state.projectReducer);
-  console.log("projectDataRedux", projectDataRedux);
-
   useEffect(() => {
     projectService
       .projectCategory()
       .then((res) => {
-        console.log("🚀 ~ file: TabProjects.jsx:41 ~ .then ~ res:", res);
         setCategory(res.data.content);
       })
       .catch((err) => {});
@@ -69,7 +64,6 @@ export default function TabProjectsTablet() {
       
       })
       .catch((err) => {
-        console.log("err", err);
       });
   }, [randomNumber]);
   useEffect(() => form.resetFields(), [project]);
@@ -80,25 +74,22 @@ export default function TabProjectsTablet() {
     setOpen(false);
   };
   const onFinish = (values) => {
-    console.log("🚀 ~ file: TabProjects.jsx:60 ~ onFinish ~ values:", values);
 
     projectService
       .updateProject(project.id, values)
       .then((res) => {
-        message.success("Edit thành công");
+        message.success("Edit successfully");
 
        
         setOpen(false);
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-        console.log("🚀 ~ file: TabProjects.jsx:77 ~ onFinish ~ err:", err);
-        message.error("Edit thất bại");
+        message.error("Edit failed");
       });
    
   };
   const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
   };
 
   const [projectDataReduxById, setProjectDataReduxById] = useState([]);
@@ -128,7 +119,6 @@ export default function TabProjectsTablet() {
   }, [projectData]);
 
   const onChangeSwitch = (checked) => {
-    console.log(`switch to ${checked}`);
 
     if (checked == true) {
       setToggle(true);
@@ -144,11 +134,11 @@ export default function TabProjectsTablet() {
     projectService
       .deleteProject(deleteProject.id)
       .then((res) => {
-        message.success("Xóa dự án thành công");
+        message.success("Delete successfully");
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-        message.error("Xóa dự án thất bại");
+        message.error("Delete failed");
       })
       .finally(setIsModalOpen(false));
   };
@@ -260,7 +250,6 @@ export default function TabProjectsTablet() {
                         width: 200,
                       }}
                       onSearch={(value) => {
-                        console.log(value);
                         searchUser(value);
                       }}
                       placeholder="Search User"
@@ -310,7 +299,6 @@ export default function TabProjectsTablet() {
                       showDrawer();
                     })
                     .catch((err) => {
-                      console.log("jsx:257 ~ TabProjects ~ err:", err);
                     });
                 }}
               ></Button>

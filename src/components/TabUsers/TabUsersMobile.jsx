@@ -24,19 +24,14 @@ const onChange = (pagination, filters, sorter, extra) => {
 };
 export default function TabUsersMobile() {
   let { usersRedux } = useSelector((state) => state.usersManageReducer);
-  console.log("lay usersRedux",usersRedux)
   const [userData, setUserData] = useState();
   const [randomNumber, setRandomNumber] = useState(11);
   const [gridData, setGridData] = useState([]);
-  console.log("🚀 ~ file: TabUsers.jsx:179 ~ TabUsers ~ gridData:", gridData);
-  console.log("user data", userData);
   useEffect(() => {
-    console.log("chay ueff setuserdata")
     setUserData(usersRedux);
   }, []);
 
   useEffect(() => {
-    console.log("chay ueff load userlist, set user data")
     usersManageService
       .getUsersList()
       .then((result) => {
@@ -93,7 +88,6 @@ export default function TabUsersMobile() {
   let [filteredValue] = useState();
 
   useEffect(() => {
-    console.log("chay ueff khi co userData, set grid data")
     if (userData) {
 
       filteredValue = userData.filter((value) => {
@@ -122,7 +116,6 @@ export default function TabUsersMobile() {
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-        console.log(err);
         message.error(err.response.data.content);
       })
       .finally(setIsModalOpen(false));
@@ -132,9 +125,7 @@ export default function TabUsersMobile() {
   };
   useEffect(() => form.resetFields(), [user]);
   const handleEdit = (id) => {
-    console.log("bam edit", id);
     const newData = gridData.find((item) => item.userId == id);
-    console.log("newData", newData);
     setUser(newData);
     showDrawer();
   };

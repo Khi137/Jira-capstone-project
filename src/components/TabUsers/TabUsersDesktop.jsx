@@ -29,13 +29,11 @@ export default function TabUsersDesktop() {
   const [gridData, setGridData] = useState([]);
 
   useEffect(() => {
-    console.log("chay ueff setuserdata")
     setUserData(usersRedux);
 
   }, []);
 
   useEffect(() => {
-    console.log("chay ueff load userlist, set user data")
     usersManageService
       .getUsersList()
       .then((result) => {
@@ -134,9 +132,7 @@ export default function TabUsersDesktop() {
   };
   useEffect(() => form.resetFields(), [user]);
   const handleEdit = (id) => {
-    console.log("bam edit", id);
     const newData = gridData.find((item) => item.userId == id);
-    console.log("newData", newData);
     setUser(newData);
     showDrawer();
   };
