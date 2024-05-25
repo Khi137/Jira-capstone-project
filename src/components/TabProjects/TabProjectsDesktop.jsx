@@ -38,15 +38,14 @@ export default function TabProjectsDesktop() {
   const [form] = Form.useForm();
   const [project, setProject] = useState(null);
   const [category, setCategory] = useState();
+  const [searchText, setSearchText] = useState("");
 
   let userJson = localStorage.getItem("USER");
   let USER = JSON.parse(userJson);
   let data = JSON.parse(localStorage.getItem("USER"));
   const [projectData, setProjectDataCom] = useState();
-
   
   let { projectDataRedux } = useSelector((state) => state.projectReducer);
-
 
   useEffect(() => {
     projectService
@@ -57,23 +56,16 @@ export default function TabProjectsDesktop() {
       .catch((err) => {});
   }, []);
 
-  //update project when delete
   useEffect(() => {
     projectService
       .getProjectList()
       .then((result) => {
-    
          dispatch(setProjectData(result.data.content));
-
         setProjectDataCom(result.data.content);
-      
       })
-      .catch((err) => {
-
-      });
+      .catch((err) => {});
   }, [randomNumber]);
 
-  //reset field khi project đổi
   useEffect(() => form.resetFields(), [project]);
   const showDrawer = () => {
     setOpen(true);
@@ -97,7 +89,6 @@ export default function TabProjectsDesktop() {
         setRandomNumber(Math.random());
       })
       .catch((err) => {
-
         message.error("Edit failed");
       });
   };
@@ -106,7 +97,6 @@ export default function TabProjectsDesktop() {
   };
 
   const [projectDataReduxById, setProjectDataReduxById] = useState([]);
-  //lấy data redux
   useEffect(() => {
     if (projectDataRedux) {
       const projectDataReduxById = projectDataRedux.filter(
@@ -117,28 +107,30 @@ export default function TabProjectsDesktop() {
     }
   }, [projectDataRedux]);
 
-  // call api data
   useEffect(() => {
     if (projectData) {
       const projectDataReduxById = projectData.filter(
         (item) => item.creator.id == USER.id
       );
       setProjectDataCom(projectData);
-    
       setProjectDataReduxById(projectDataReduxById);
     }
   }, [projectData]);
 
   const onChangeSwitch = (checked) => {
-
-    if (checked == true) {
-      setToggle(true);
-    } else if (checked == false) {
-      setToggle(false);
-    }
+    setToggle(checked);
   };
 
-  // Modal Delete
+  const onSearch = (value) => {
+    setSearchText(value);
+  };
+
+  const filterProjects = (projects, searchText) => {
+    return projects.filter((project) =>
+      project.projectName.toLowerCase().includes(searchText.toLowerCase())
+    );
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteProject, setDeleteProject] = useState();
   const handleOk = () => {
@@ -156,6 +148,7 @@ export default function TabProjectsDesktop() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
   const columns = [
     {
       title: "ID",
@@ -179,14 +172,12 @@ export default function TabProjectsDesktop() {
           </Tag>
         );
       },
-      
     },
     {
       title: "Category",
       dataIndex: "categoryName",
       width: 150,
       render: (text) => <p style={{ color: "#252935" }}>{text}</p>,
-    
     },
     {
       title: "Creator",
@@ -194,13 +185,10 @@ export default function TabProjectsDesktop() {
       render: (text, record, index) => {
         return <div style={{ color: "#252935" }}>{record.creator?.name}</div>;
       },
-      
-
       width: 100,
     },
     {
       title: "Members",
-
       render: (text, record, index) => {
         return (
           <div>
@@ -254,7 +242,6 @@ export default function TabProjectsDesktop() {
                       );
                     }}
                   >
-                    {/* <Avatar key={index} src={member.avatar}     /> */}
                     <Avatar
                       style={{
                         backgroundColor: "#B7BCCC",
@@ -308,13 +295,12 @@ export default function TabProjectsDesktop() {
     {
       title: "Action",
       key: "action",
-
       render: (_, record) => {
         return (
           <>
             <Space size="middle">
               <Button
-              type="primary"
+                type="primary"
                 className="btnBlue"
                 icon={<EditOutlined />}
                 onClick={() => {
@@ -326,8 +312,7 @@ export default function TabProjectsDesktop() {
                     .then(() => {
                       showDrawer();
                     })
-                    .catch((err) => {
-                    });
+                    .catch((err) => {});
                 }}
               ></Button>
               <Button
@@ -345,6 +330,11 @@ export default function TabProjectsDesktop() {
       },
     },
   ];
+
+  const filteredProjects = toggle
+    ? filterProjects(projectDataReduxById, searchText)
+    : filterProjects(projectData, searchText);
+
   return (
     <div className="">
       <ConfigProvider
@@ -362,21 +352,26 @@ export default function TabProjectsDesktop() {
           },
         }}
       >
-        <Switch
-          className="switch"
-          style={{ marginBottom: "10px" }}
-          checkedChildren="Your Project"
-          unCheckedChildren="All Project"
-          defaultChecked
-          onChange={onChangeSwitch}
-        />
+        <Space style={{ marginBottom: "10px" }}>
+          <Switch
+            className="switch"
+            checkedChildren="Your Project"
+            unCheckedChildren="All Project"
+            defaultChecked
+            onChange={onChangeSwitch}
+          />
+          <Input.Search
+            placeholder="Search Project"
+            onSearch={onSearch}
+            style={{ width: 200 }}
+            allowClear
+          />
+        </Space>
 
         <Drawer
           title="Edit Project"
           placement="right"
-          onClose={() => {
-            onClose();
-          }}
+          onClose={onClose}
           open={open}
         >
           <Form
@@ -393,17 +388,11 @@ export default function TabProjectsDesktop() {
             onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
-            <Form.Item
-              name="id"
-              label="ID"
-              rules={[]}
-            >
+            <Form.Item name="id" label="ID" rules={[]}>
               <Input
-                style={{
-                  borderColor: "black",
-                }}
-                values={project?.id}
-                disabled={true}
+                style={{ borderColor: "black" }}
+                value={project?.id}
+                disabled
               />
             </Form.Item>
 
@@ -413,11 +402,7 @@ export default function TabProjectsDesktop() {
               label="Project Name"
               rules={[]}
             >
-              <Input
-                style={{
-                }}
-                values={project?.projectName}
-              />
+              <Input value={project?.projectName} />
             </Form.Item>
 
             <Form.Item
@@ -427,18 +412,16 @@ export default function TabProjectsDesktop() {
               rules={[]}
             >
               <Select
-                style={{
-                }}
-                values={{
+                value={{
                   value: project?.projectCategory?.id,
                   label: project?.projectCategory?.name,
                 }}
               >
                 {category?.map((item, index) => {
                   return (
-                    <Option value={item.id} key={index}>
+                    <Select.Option value={item.id} key={index}>
                       {item.projectCategoryName}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -447,33 +430,23 @@ export default function TabProjectsDesktop() {
             <Form.Item label="Description" name="description" rules={[]}>
               <Input.TextArea
                 rows={4}
-                style={{
-                  height: "50px",
-                }}
-                values={project?.description}
+                style={{ height: "50px" }}
+                value={project?.description}
               />
             </Form.Item>
 
             <Form.Item>
-            <Space style={{width:"100%", justifyContent:"center"}}>
-              <Button
-                className="btnBlue"
-               
-                htmlType="submit"
-         
-              >
-                Submit
-              </Button>
-              <Button
-                className="btnCancel"
-                type="text"
-                onClick={() => {
-                  onClose();
-                }}
-           
-              >
-                Cancel
-              </Button>
+              <Space style={{ width: "100%", justifyContent: "center" }}>
+                <Button className="btnBlue" htmlType="submit">
+                  Submit
+                </Button>
+                <Button
+                  className="btnCancel"
+                  type="text"
+                  onClick={onClose}
+                >
+                  Cancel
+                </Button>
               </Space>
             </Form.Item>
           </Form>
@@ -485,30 +458,24 @@ export default function TabProjectsDesktop() {
           onOk={handleOk}
           onCancel={handleCancel}
         >
-         <span className="flex"> <p>Are you sure to delete this Project: </p><p className="text-red-500  pl-1">  {deleteProject?.projectName
-}</p></span>
+          <span className="flex">
+            <p>Are you sure to delete this Project: </p>
+            <p className="text-red-500 pl-1">
+              {deleteProject?.projectName}
+            </p>
+          </span>
         </Modal>
       </ConfigProvider>
 
-      {toggle === true ?
- <Table
- size="small"
-   columns={columns}
-   dataSource={projectDataReduxById}
-   onChange={onChange}
-   scroll={{
-     y: 200,
-   }}
- /> :<Table
-  size="small"
-    columns={columns}
-    dataSource={projectData}
-    onChange={onChange}
-    scroll={{
-      y: 200,
-    }}
-  />
-}
+      <Table
+        size="small"
+        columns={columns}
+        dataSource={filteredProjects}
+        onChange={onChange}
+        scroll={{
+          y: 200,
+        }}
+      />
     </div>
   );
 }

@@ -25,11 +25,12 @@ import {
   EditOutlined,
 } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-
 import { setProjectData } from "../../redux/action/project";
+
 const onChange = (pagination, filters, sorter, extra) => {
   console.log("params", pagination, filters, sorter, extra);
 };
+
 export default function TabProjectsMobile() {
   const dispatch = useDispatch();
   const [randomNumber, setRandomNumber] = useState("11");
@@ -38,12 +39,13 @@ export default function TabProjectsMobile() {
   const [form] = Form.useForm();
   const [project, setProject] = useState(null);
   const [category, setCategory] = useState();
+  const [searchText, setSearchText] = useState("");
 
   let userJson = localStorage.getItem("USER");
   let USER = JSON.parse(userJson);
   let data = JSON.parse(localStorage.getItem("USER"));
   const [projectData, setProjectDataCom] = useState();
-  
+
   let { projectDataRedux } = useSelector((state) => state.projectReducer);
 
   useEffect(() => {
@@ -52,26 +54,19 @@ export default function TabProjectsMobile() {
       .then((res) => {
         setCategory(res.data.content);
       })
-      .catch((err) => {});
+      .catch((err) => { });
   }, []);
 
-  //update project when delete
   useEffect(() => {
     projectService
       .getProjectList()
       .then((result) => {
-      
-         dispatch(setProjectData(result.data.content));
-
+        dispatch(setProjectData(result.data.content));
         setProjectDataCom(result.data.content);
-      
       })
-      .catch((err) => {
-        console.log("err", err);
-      });
+      .catch((err) => { });
   }, [randomNumber]);
 
-  //reset field khi project đổi
   useEffect(() => form.resetFields(), [project]);
   const showDrawer = () => {
     setOpen(true);
@@ -103,8 +98,6 @@ export default function TabProjectsMobile() {
   };
 
   const [projectDataReduxById, setProjectDataReduxById] = useState([]);
-
-  //lấy data redux
   useEffect(() => {
     if (projectDataRedux) {
       const projectDataReduxById = projectDataRedux.filter(
@@ -115,28 +108,30 @@ export default function TabProjectsMobile() {
     }
   }, [projectDataRedux]);
 
-  // call api data
   useEffect(() => {
     if (projectData) {
       const projectDataReduxById = projectData.filter(
         (item) => item.creator.id == USER.id
       );
       setProjectDataCom(projectData);
-    
       setProjectDataReduxById(projectDataReduxById);
     }
   }, [projectData]);
 
   const onChangeSwitch = (checked) => {
-
-    if (checked == true) {
-      setToggle(true);
-    } else if (checked == false) {
-      setToggle(false);
-    }
+    setToggle(checked);
   };
 
-  // Modal Delete
+  const onSearch = (value) => {
+    setSearchText(value);
+  };
+
+  const filterProjects = (projects, searchText) => {
+    return projects.filter((project) =>
+      project.projectName.toLowerCase().includes(searchText.toLowerCase())
+    );
+  };
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [deleteProject, setDeleteProject] = useState();
   const handleOk = () => {
@@ -154,12 +149,11 @@ export default function TabProjectsMobile() {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
   const columns = [
-  
     {
       title: "Project Name",
       dataIndex: "projectName",
-      
       render: (text, record, index) => {
         return (
           <Tag color="purple">
@@ -172,9 +166,7 @@ export default function TabProjectsMobile() {
           </Tag>
         );
       },
-      
     },
-
     {
       title: "Action",
       key: "action",
@@ -184,7 +176,7 @@ export default function TabProjectsMobile() {
           <>
             <Space size="small">
               <Button
-              type="primary"
+                type="primary"
                 className="btnBlue"
                 icon={<EditOutlined />}
                 onClick={() => {
@@ -196,8 +188,7 @@ export default function TabProjectsMobile() {
                     .then(() => {
                       showDrawer();
                     })
-                    .catch((err) => {
-                    });
+                    .catch((err) => { });
                 }}
               ></Button>
               <Button
@@ -215,6 +206,11 @@ export default function TabProjectsMobile() {
       },
     },
   ];
+
+  const filteredProjects = toggle
+    ? filterProjects(projectDataReduxById, searchText)
+    : filterProjects(projectData, searchText);
+
   return (
     <div className="">
       <ConfigProvider
@@ -232,21 +228,26 @@ export default function TabProjectsMobile() {
           },
         }}
       >
-        <Switch
-          className="switch"
-          style={{ marginBottom: "25px" }}
-          checkedChildren="Your Project"
-          unCheckedChildren="All Project"
-          defaultChecked
-          onChange={onChangeSwitch}
-        />
+        <Space style={{ marginBottom: "10px" }}>
+          <Switch
+            className="switch"
+            checkedChildren="Your Project"
+            unCheckedChildren="All Project"
+            defaultChecked
+            onChange={onChangeSwitch}
+          />
+          <Input.Search
+            placeholder="Search Project"
+            onSearch={onSearch}
+            style={{ width: 200 }}
+            allowClear
+          />
+        </Space>
 
         <Drawer
           title="Edit Project"
           placement="right"
-          onClose={() => {
-            onClose();
-          }}
+          onClose={onClose}
           open={open}
         >
           <Form
@@ -258,27 +259,16 @@ export default function TabProjectsMobile() {
               projectName: project?.projectName,
               categoryId: project?.projectCategory?.id,
               description: project?.description,
-
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
             autoComplete="off"
-
           >
-            <Form.Item
-              name="id"
-              label="ID"
-
-              rules={[]}
-            >
+            <Form.Item name="id" label="ID" rules={[]}>
               <Input
-                style={{
-                  borderColor: "black",
-
-
-                }}
-                values={project?.id}
-                disabled={true}
+                style={{ borderColor: "black" }}
+                value={project?.id}
+                disabled
               />
             </Form.Item>
 
@@ -288,12 +278,7 @@ export default function TabProjectsMobile() {
               label="Project Name"
               rules={[]}
             >
-              <Input
-                style={{
-
-                }}
-                values={project?.projectName}
-              />
+              <Input value={project?.projectName} />
             </Form.Item>
 
             <Form.Item
@@ -303,19 +288,16 @@ export default function TabProjectsMobile() {
               rules={[]}
             >
               <Select
-                style={{
-
-                }}
-                values={{
+                value={{
                   value: project?.projectCategory?.id,
                   label: project?.projectCategory?.name,
                 }}
               >
                 {category?.map((item, index) => {
                   return (
-                    <Option value={item.id} key={index}>
+                    <Select.Option value={item.id} key={index}>
                       {item.projectCategoryName}
-                    </Option>
+                    </Select.Option>
                   );
                 })}
               </Select>
@@ -324,34 +306,23 @@ export default function TabProjectsMobile() {
             <Form.Item label="Description" name="description" rules={[]}>
               <Input.TextArea
                 rows={4}
-                style={{
-
-                  height: "50px",
-                }}
-                values={project?.description}
+                style={{ height: "50px" }}
+                value={project?.description}
               />
             </Form.Item>
 
             <Form.Item>
-            <Space style={{width:"100%", justifyContent:"center"}}>
-              <Button
-                className="btnBlue"
-               
-                htmlType="submit"
-         
-              >
-                Submit
-              </Button>
-              <Button
-                className="btnCancel"
-                type="text"
-                onClick={() => {
-                  onClose();
-                }}
-           
-              >
-                Cancel
-              </Button>
+              <Space style={{ width: "100%", justifyContent: "center" }}>
+                <Button className="btnBlue" htmlType="submit">
+                  Submit
+                </Button>
+                <Button
+                  className="btnCancel"
+                  type="text"
+                  onClick={onClose}
+                >
+                  Cancel
+                </Button>
               </Space>
             </Form.Item>
           </Form>
@@ -363,30 +334,20 @@ export default function TabProjectsMobile() {
           onOk={handleOk}
           onCancel={handleCancel}
         >
-         <span className="flex"> <p>Are you sure to delete this Project: </p><p className="text-red-500  pl-1">  {deleteProject?.projectName
-}</p></span>
+          <span className="flex">
+            <p>Are you sure to delete this Project: </p>
+            <p className="text-red-500 pl-1">{deleteProject?.projectName}</p>
+          </span>
         </Modal>
       </ConfigProvider>
 
-      {toggle === true ?
- <Table
- size="small"
-   columns={columns}
-   dataSource={projectDataReduxById}
-   onChange={onChange}
-   scroll={{
-     y: 200,
-   }}
- /> :<Table
-  size="small"
-    columns={columns}
-    dataSource={projectData}
-    onChange={onChange}
-    scroll={{
-      y: 200,
-    }}
-  />
-}
+      <Table
+        size="small"
+        columns={columns}
+        dataSource={filteredProjects}
+        onChange={onChange}
+        scroll={{ y: 200 }}
+      />
     </div>
   );
 }
