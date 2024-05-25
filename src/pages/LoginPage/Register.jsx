@@ -115,26 +115,26 @@ function Register() {
               </Form.Item>
 
               <Form.Item
-  label="Password"
-  name="passWord"
-  rules={[
-    { required: true, message: 'Please input your password!' },
-    {
-      min: 6,
-      message: 'Password must be at least 6 characters',
-    },
-    {
-      pattern: /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).*$/,
-      message: 'Password must contain at least one uppercase letter and one special character',
-    },
-  ]}
->
-  <Input.Password
-    style={{
-      // Your custom styles here
-    }}
-  />
-</Form.Item>
+                label="Password"
+                name="passWord"
+                rules={[
+                  { required: true, message: 'Please input your password!' },
+                  {
+                    min: 6,
+                    message: 'Password must be at least 6 characters',
+                  },
+                  {
+                    pattern: /^(?=.*[A-Z])(?=.*[^a-zA-Z0-9]).*$/,
+                    message: 'Password must contain at least one uppercase letter and one special character',
+                  },
+                ]}
+              >
+                <Input.Password
+                  style={{
+                    // Your custom styles here
+                  }}
+                />
+              </Form.Item>
 
               <Form.Item
                 label="Confirm Password"
@@ -161,7 +161,7 @@ function Register() {
                 <Input
                   style={
                     {
-           
+
                     }
                   }
                   type="password"
@@ -182,7 +182,7 @@ function Register() {
                 <Input
                   style={
                     {
-                     
+
                     }
                   }
                 />
@@ -202,7 +202,7 @@ function Register() {
                   addonBefore={prefixSelector}
                   style={
                     {
-                      
+
                     }
                   }
                 />
