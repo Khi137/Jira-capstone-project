@@ -65,6 +65,7 @@ export default function LoginPage() {
                 {
                   required: true,
                   message: "Please input your Email!",
+                  type: "email", // Kiểm tra email hợp lệ
                 },
               ]}
             >
@@ -78,29 +79,24 @@ export default function LoginPage() {
               />
             </Form.Item>
             <Form.Item
-              name="passWord"
+              name="password"
               rules={[
                 {
                   required: true,
-                  message: "Please input your Password!",
+                  message: "Please input your Password correctly!",
+                  min: 6, // ít nhất 6 ký tự
+                  pattern: /^(?=.*[A-Z])(?=.*[!@#$%^&*])/g, // ít nhất một chữ cái viết hoa và một ký tự đặc biệt
                 },
               ]}
             >
-              <Input
+              <Input.Password
                 style={{
                   width: "300px",
                   height: "50px",
                 }}
                 prefix={<LockOutlined className="site-form-item-icon" />}
-                type={passwordVisible ? "text" : "password"}
                 placeholder="Password"
-                suffix={
-                  passwordVisible ? (
-                    <EyeTwoTone onClick={() => setPasswordVisible(false)} />
-                  ) : (
-                    <EyeInvisibleOutlined onClick={() => setPasswordVisible(true)} />
-                  )
-                }
+                iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
               />
             </Form.Item>
 
